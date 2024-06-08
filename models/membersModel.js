@@ -25,7 +25,7 @@ const memberSchema = new mongoose.Schema({
         required: true
     },
     paymentHistory: {
-        type: [paymentHistorySchema],
+        type: [],
         required: true
     },
     groupId: {

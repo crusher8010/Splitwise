@@ -19,16 +19,70 @@ exports.createMember = async(req, res) => {
 
 exports.updateMember = async(req, res) => {
     try{
-        const id = req.params.id;
+        let id = req.params.id;
 
-        const updatedMember = await Members.findByIdAndUpdate(id, req.body, {
-            new: true,
-            runValidators: true
+
+        let temp = req.body;
+        let allMember = await Members.find();
+
+        let paymentData = temp.reduce((arr, item) => {
+            arr[item.id] = item;
+            return arr;
+        }, {});
+
+        const updatePromises = allMember.map((member) => {
+            const update = paymentData[member._id];
+            return Members.updateOne(
+                {_id: member._id},
+                {
+                    $set: {
+                        expenses: update.expenses,
+                        paymentHistory: update.paymentHistory
+                    }
+                }
+            )
         });
 
+        const results = await Promise.all(updatePromises);
+
         res.status(201).json({
-            status: true,
-            data: updatedMember
+            message: 'success',
+            data: results
+        });
+        // let allMember = await Members.find().filter((el) =>{
+        //     for(let i=0;i<temp.length;i++){
+        //         if(temp[i].id == el._id){
+                     
+        //         }
+        //     }
+        // }
+            
+             
+        // )
+
+        // const id = req.params.id;
+        // const history = req.body.paymentHistory;
+        // let allMember = await Members.find().filter((el) => req.body.groupId === el.groupId)
+
+        // if(history.length > 0){
+        //     for(let i=0;i<history.length;i++){
+
+        //     }
+        // }
+
+        
+
+        // const updatedMember = await Members.findByIdAndUpdate(id, req.body, {
+        //     new: true,
+        //     runValidators: true
+        // });
+
+        // res.status(201).json({
+        //     status: true,
+        //     data: updatedMember
+        // })
+        res.status(200).json({
+            message: "success"
         })
     }catch(err){
         res.status(500).json({

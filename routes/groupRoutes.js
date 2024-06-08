@@ -1,5 +1,5 @@
 const express = require('express');
-const {createGroup, editGroupName} = require('../../../Splitwise/backend/controllers/groupController');
+const {createGroup, editGroupName} = require('../controllers/groupController');
 
 const router = express.Router();
 
