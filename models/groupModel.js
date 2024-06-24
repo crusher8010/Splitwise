@@ -8,8 +8,12 @@ const groupSchema = new mongoose.Schema({
     totalGroupExpenses: {
         type: Number,
         required: true
+    },
+    userId: {
+        type: String,
+        required: true
     }
 });
 
-const splitGroup = mongoose.model('splitGroup', groupSchema);
+const splitGroup = mongoose.model('groups', groupSchema);
 module.exports = splitGroup;
